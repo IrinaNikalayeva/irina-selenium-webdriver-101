@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" total="5" passed="5">
+  <reporter-output>
+  </reporter-output>
+  <suite name="EmailTests" duration-ms="18343" started-at="2016-01-17T12:30:27Z" finished-at="2016-01-17T12:30:46Z">
+    <groups>
+    </groups>
+    <test name="EmailTests" duration-ms="18343" started-at="2016-01-17T12:30:27Z" finished-at="2016-01-17T12:30:46Z">
+      <class name="TestSteps">
+        <test-method status="PASS" signature="SignIn()[pri:0, instance:TestSteps@4cc451f2]" name="SignIn" duration-ms="3879" started-at="2016-01-17T15:30:27Z" finished-at="2016-01-17T15:30:31Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- SignIn -->
+        <test-method status="PASS" signature="createAnEmail()[pri:1, instance:TestSteps@4cc451f2]" name="createAnEmail" duration-ms="8521" started-at="2016-01-17T15:30:31Z" finished-at="2016-01-17T15:30:40Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- createAnEmail -->
+        <test-method status="PASS" signature="saveDraft()[pri:2, instance:TestSteps@4cc451f2]" name="saveDraft" duration-ms="2162" started-at="2016-01-17T15:30:40Z" finished-at="2016-01-17T15:30:42Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- saveDraft -->
+        <test-method status="PASS" signature="navigateToDraftEmail()[pri:3, instance:TestSteps@4cc451f2]" name="navigateToDraftEmail" duration-ms="3628" started-at="2016-01-17T15:30:42Z" finished-at="2016-01-17T15:30:46Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- navigateToDraftEmail -->
+        <test-method status="PASS" signature="sendAnEmail()[pri:4, instance:TestSteps@4cc451f2]" name="sendAnEmail" duration-ms="136" started-at="2016-01-17T15:30:46Z" finished-at="2016-01-17T15:30:46Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- sendAnEmail -->
+        <test-method status="PASS" signature="quitBrowser()[pri:0, instance:TestSteps@4cc451f2]" name="quitBrowser" is-config="true" duration-ms="1348" started-at="2016-01-17T15:30:46Z" finished-at="2016-01-17T15:30:47Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- quitBrowser -->
+      </class> <!-- TestSteps -->
+    </test> <!-- EmailTests -->
+  </suite> <!-- EmailTests -->
+</testng-results>

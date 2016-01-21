@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [EmailTests]">
+  <test name="EmailTests(failed)">
+    <classes>
+      <class name="TestSteps">
+        <methods>
+          <include name="navigateToDraftEmail"/>
+          <include name="quitBrowser"/>
+          <include name="sendAnEmail"/>
+          <include name="saveDraft"/>
+        </methods>
+      </class> <!-- TestSteps -->
+    </classes>
+  </test> <!-- EmailTests(failed) -->
+</suite> <!-- Failed suite [EmailTests] -->
