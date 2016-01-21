@@ -17,7 +17,10 @@ public class Task1Steps {
 
 
     static {
-    System.setProperty("webdriver.chrome.driver",
+        //System.setProperty("webdriver.chrome.driver",
+        // "D:\\TA\\Module5\\chromedriver.exe");
+
+        System.setProperty("webdriver.chrome.driver",
                 "D:\\TA\\chromedriver.exe");
     }
 
