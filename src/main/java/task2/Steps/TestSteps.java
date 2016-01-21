@@ -16,8 +16,6 @@ public class TestSteps {
         System.setProperty("webdriver.chrome.driver",
                 "D:\\TA\\chromedriver.exe");
         webDriver = new ChromeDriver();
-        webDriver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
-        webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
     public void login(String username, String passwrod) {
