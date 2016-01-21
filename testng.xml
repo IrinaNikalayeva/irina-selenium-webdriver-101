@@ -1,0 +1,7 @@
+<suite name="EmailTests">
+    <test name="EmailTests">
+        <classes>
+            <class name="TestSteps" />
+        </classes>
+    </test>
+</suite>
