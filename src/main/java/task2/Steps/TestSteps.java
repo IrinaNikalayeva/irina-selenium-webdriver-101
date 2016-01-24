@@ -5,7 +5,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import task2.Pages.DraftsPage;
 import task2.Pages.EmailDetailsPage;
 import task2.Pages.HomePage;
-import task2.Pages.MailBoxPage;
+import task2.Pages.InboxPage;
 
 import java.util.concurrent.TimeUnit;
 
@@ -16,6 +16,8 @@ public class TestSteps {
         System.setProperty("webdriver.chrome.driver",
                 "D:\\TA\\chromedriver.exe");
         webDriver = new ChromeDriver();
+        webDriver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+        webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
     public void login(String username, String passwrod) {
@@ -27,34 +29,34 @@ public class TestSteps {
     }
 
     public boolean isLoggedIn(String username) {
-        MailBoxPage mailBoxPage = new MailBoxPage(webDriver);
-        return mailBoxPage.getUsername().contains(username);
+        InboxPage inboxPage = new InboxPage(webDriver);
+        return inboxPage.getUsername().contains(username);
     }
 
     public void createEmail(String to, String subject, String body) {
-        MailBoxPage mailBoxPage = new MailBoxPage(webDriver);
-        mailBoxPage.createEmail(to, subject, body);
+        InboxPage inboxPage = new InboxPage(webDriver);
+        inboxPage.createEmail(to, subject, body);
     }
 
     public boolean isEmailCreating() {
-        MailBoxPage mailBoxPage = new MailBoxPage(webDriver);
-        return mailBoxPage.coposeEmailCheck().contains("compose");
+        InboxPage inboxPage = new InboxPage(webDriver);
+        return inboxPage.coposeEmailCheck().contains("compose");
     }
 
 
     public void saveAsDraft() throws InterruptedException {
-        MailBoxPage mailBoxPage = new MailBoxPage(webDriver);
-        mailBoxPage.saveAsDraft();
+        InboxPage inboxPage = new InboxPage(webDriver);
+        inboxPage.saveAsDraft();
     }
 
     public Boolean isSavedToDrafts() {
-        MailBoxPage mailBoxPage = new MailBoxPage(webDriver);
-        return mailBoxPage.getSaveButtonStatus().equals("disabled");
+        InboxPage inboxPage = new InboxPage(webDriver);
+        return inboxPage.getSaveButtonStatus().equals("disabled");
     }
 
     public void goToDrafts() {
-        MailBoxPage mailBoxPage = new MailBoxPage(webDriver);
-        mailBoxPage.openDraftsPage();
+        InboxPage inboxPage = new InboxPage(webDriver);
+        inboxPage.openDraftsPage();
     }
 
     public boolean isDraftsAreOpened() {

@@ -6,7 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 
-public class MailBoxPage extends AbstractPage {
+public class InboxPage extends AbstractPage {
 
     protected static final String BASE_URL = "https://e.mail.ru/messages/inbox/";
 
@@ -38,7 +38,7 @@ public class MailBoxPage extends AbstractPage {
     private WebElement username;
 
 
-    public MailBoxPage(WebDriver webDriver) {
+    public InboxPage(WebDriver webDriver) {
         super(webDriver);
         PageFactory.initElements(this.webDriver, this);
     }
