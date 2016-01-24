@@ -77,7 +77,7 @@ public class EmailTests extends BaseTest {
     }
 
     @Test
-    public void createAndRemove() throws InterruptedException {
+    public void saveDraftAndRemove() throws InterruptedException {
         create(text);
         webDriver.findElement(saveDraftBttn).click();
         Thread.sleep(2000);
