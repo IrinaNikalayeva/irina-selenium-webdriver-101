@@ -21,13 +21,7 @@ public class Steps {
         webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
-  /*  public void open(){
-        MainPage mainPage = new MainPage(webDriver);
-        mainPage.openPage();
-    }*/
-
-    public void login(String USERNAME, String PASSWORD)
-    {
+    public void login(String USERNAME, String PASSWORD) {
         MainPage mainPage = new MainPage(webDriver);
         mainPage.openPage();
         webDriver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
@@ -36,73 +30,59 @@ public class Steps {
         webDriver.findElement(mainPage.submitButton).click();
     }
 
-    /*public void create(String text1, String to, String suject, String messageBody) throws InterruptedException {
-        InboxPage inboxPage = new InboxPage(webDriver);
-        webDriver.findElement(inboxPage.createEmailBttn).click();
-        webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        webDriver.findElement(inboxPage.toField).sendKeys(to);
-        webDriver.findElement(inboxPage.subjectField).sendKeys(suject + text1);
-        webDriver.switchTo().frame(webDriver.findElement(inboxPage.bodyFrame));
-        webDriver.findElement(inboxPage.bodyField).sendKeys(messageBody);
-        webDriver.switchTo().defaultContent();
-    }*/
-
-    public EmailPage createEmail(){
+    public EmailPage createEmail() {
         InboxPage inboxPage = new InboxPage(webDriver);
         webDriver.findElement(inboxPage.createEmailBttn).click();
         return PageFactory.initElements(webDriver, EmailPage.class);
     }
 
-    public void fillEmail(String text1, String to, String suject, String messageBody){
+    public void fillEmail(String text1, String to, String suject, String messageBody) {
         EmailPage emailPage = new EmailPage();
         webDriver.findElement(emailPage.toField).sendKeys(to);
         webDriver.findElement(emailPage.subjectField).sendKeys(suject + text1);
         webDriver.switchTo().frame(webDriver.findElement(emailPage.bodyFrame));
         webDriver.findElement(emailPage.bodyField).sendKeys(messageBody);
         webDriver.switchTo().defaultContent();
-
     }
 
     public void sendEmail() throws InterruptedException {
         EmailPage emailPage = new EmailPage();
         webDriver.findElement(emailPage.sendBttn).click();
         Thread.sleep(1000);
-
-
     }
 
-    public void navigatetoSentEmail(){
+    public void navigatetoSentEmail() {
         EmailPage emailPage = new EmailPage();
         webDriver.findElement(emailPage.sentFolder).click();
         webDriver.navigate().refresh();
     }
 
-    public void chooseLastSentEmail(){
+    public void chooseLastSentEmail() {
         SentEmailFolder sentEmailFolder = new SentEmailFolder();
         String email = webDriver.findElement(sentEmailFolder.lastSentEmail).getAttribute("href").toString();
         webDriver.get(email);
     }
 
-    public String getSentEmailSubj(){
+    public String getSentEmailSubj() {
         SentEmailDetailsPage sentEmailDetailsPage = new SentEmailDetailsPage();
         String subj = webDriver.findElement(sentEmailDetailsPage.sentEmailSubj).getText();
         return subj;
     }
 
-    public void navigateToInboxFolder(){
+    public void navigateToInboxFolder() {
         InboxPage inboxPage = new InboxPage(webDriver);
         webDriver.findElement(inboxPage.inboxFolder).click();
         webDriver.navigate().refresh();
     }
 
-    public void chooseLastRecievedEmail(){
+    public void chooseLastRecievedEmail() {
         InboxPage inboxPage = new InboxPage(webDriver);
         String email = webDriver.findElement(inboxPage.lastSentEmail).getAttribute("href").toString();
         webDriver.get(email);
 
     }
 
-    public String getLastRecievedEmailubj(){
+    public String getLastRecievedEmailubj() {
         String subj = webDriver.findElement(By.className("b-letter__head__subj__text")).getText();
         return subj;
     }
@@ -113,14 +93,14 @@ public class Steps {
         Thread.sleep(2000);
     }
 
-    public void navigateToDraftsFolder(){
+    public void navigateToDraftsFolder() {
         task2.v2.DraftsPage draftsPage = new task2.v2.DraftsPage();
         webDriver.findElement(draftsPage.draftsFolderBttn).click();
     }
 
-    public String getDraftEmailsubj(){
+    public String getDraftEmailsubj() {
         DraftsPage draftsPage = new DraftsPage();
-       String subj = webDriver.findElement(draftsPage.lastCreatedEmailItem).getAttribute("data-subject").toString();
+        String subj = webDriver.findElement(draftsPage.lastCreatedEmailItem).getAttribute("data-subject").toString();
         return subj;
     }
 
@@ -131,7 +111,9 @@ public class Steps {
         webDriver.findElement(draftsPage.lastCreatedEmailItem).sendKeys(Keys.DELETE);
         Thread.sleep(2000);
     }
+
     public void cleanUp() {
-        webDriver.close();}
+        webDriver.close();
+    }
 
 }

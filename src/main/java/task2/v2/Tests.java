@@ -24,13 +24,12 @@ public class Tests {
     }
 
     @BeforeTest
-    public void login(){
+    public void login() {
         steps.login(USERNAME, PASSWORD);
     }
 
-   @Test
+    @Test
     public void createAndSend() throws InterruptedException {
-       // steps.login(USERNAME, PASSWORD);
         steps.createEmail();
         steps.fillEmail(text, to, suject, messageBody);
         steps.sendEmail();
@@ -40,9 +39,8 @@ public class Tests {
 
     }
 
-   @Test
+    @Test
     public void sendAndVerify() throws InterruptedException {
-        //steps.login(USERNAME, PASSWORD);
         steps.createEmail();
         steps.fillEmail(text, to, suject, messageBody);
         steps.sendEmail();
@@ -53,7 +51,6 @@ public class Tests {
 
     @Test
     public void saveAndDelete() throws InterruptedException {
-       // steps.login(USERNAME, PASSWORD);
         steps.createEmail();
         steps.fillEmail(text, to, suject, messageBody);
         steps.saveToDrafts();
@@ -64,60 +61,8 @@ public class Tests {
     }
 
     @AfterTest
-    public void cleanUp(){
+    public void cleanUp() {
         steps.cleanUp();
     }
-
-
-
-
-    /*@Test
-    public void test() throws InterruptedException {
-        InboxPage mainPage = new InboxPage(webDriver);
-        mainPage.create("text", to, suject, messageBody);
-    }*/
-
-    /*@Test
-    public void createAndSend() throws InterruptedException {
-        create(text);
-        webDriver.findElement(sendBttn).click();
-        webDriver.findElement(sentFolder).click();
-        Thread.sleep(1000);
-        webDriver.navigate().refresh();
-        webDriver.get(webDriver.findElement(lastSentEmail).getAttribute("href").toString());
-        String sudj = webDriver.findElement(sentEmailSubj).getText();
-        System.out.println("text " + text + " subj " + sudj);
-        Assert.assertTrue(sudj.contains(text), "Email doesn't exists!");
-    }
-
-    @Test
-    public void sendAndVerify() throws InterruptedException {
-        create(text);
-        Thread.sleep(500);
-        webDriver.findElement(sendBttn).click();
-        webDriver.findElement(inboxFolder).click();
-        webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        webDriver.navigate().refresh();
-        String email = webDriver.findElement(lastSentEmail).getAttribute("href").toString();
-        webDriver.get(email);
-        String sudj = webDriver.findElement(By.className("b-letter__head__subj__text")).getText();
-        Assert.assertTrue(sudj.contains(text), "Email doesn't exists!");
-    }
-
-    @Test
-    public void saveDraftAndRemove() throws InterruptedException {
-        create(text);
-        webDriver.findElement(saveDraftBttn).click();
-        Thread.sleep(2000);
-        webDriver.findElement(draftsBttn).click();
-        webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        webDriver.findElement(chkBox).click();
-        webDriver.findElement(lastCreatedEmailItem).sendKeys(Keys.DELETE);
-    }
-
-    @AfterTest
-    public void cleanUp() {
-        webDriver.close();
-    }*/
 }
 
