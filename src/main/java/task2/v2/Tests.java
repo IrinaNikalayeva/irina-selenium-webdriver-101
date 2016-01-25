@@ -1,20 +1,15 @@
-package task1;
+package task2.v2;
 
 
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+import task1.Util;
 
-import java.util.concurrent.TimeUnit;
-
-public class EmailTests extends BaseTest {
-    private WebDriver webDriver;
-    BaseTest baseTest = new BaseTest();
+public class Tests {
+    private Steps steps;
     String text = Util.getRandomString(5);
     static final String USERNAME = "maven.test";
     static final String PASSWORD = "Qwerty123";
@@ -24,31 +19,65 @@ public class EmailTests extends BaseTest {
 
     @BeforeSuite
     public void setUp() {
-        System.setProperty("webdriver.chrome.driver",
-                "D:\\TA\\chromedriver.exe");
-        webDriver = new ChromeDriver();
+        steps = new Steps();
+        steps.initBrowser();
     }
-
 
     @BeforeTest
-    public void login() {
-        webDriver.get("https://mail.ru");
-        webDriver.findElement(loginField).sendKeys(USERNAME);
-        webDriver.findElement(passwordField).sendKeys(PASSWORD);
-        webDriver.findElement(submitButton).click();
-    }
-
-    public void create(String text1) throws InterruptedException {
-        webDriver.findElement(createEmailBttn).click();
-        webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        webDriver.findElement(toField).sendKeys(to);
-        webDriver.findElement(subjectField).sendKeys(suject + text1);
-        webDriver.switchTo().frame(webDriver.findElement(bodyFrame));
-        webDriver.findElement(bodyField).sendKeys(messageBody);
-        webDriver.switchTo().defaultContent();
+    public void login(){
+        steps.login(USERNAME, PASSWORD);
     }
 
    @Test
+    public void createAndSend() throws InterruptedException {
+       // steps.login(USERNAME, PASSWORD);
+        steps.createEmail();
+        steps.fillEmail(text, to, suject, messageBody);
+        steps.sendEmail();
+        steps.navigatetoSentEmail();
+        steps.chooseLastSentEmail();
+        Assert.assertTrue(steps.getSentEmailSubj().contains(text), "Email doesn't exists!");
+
+    }
+
+   @Test
+    public void sendAndVerify() throws InterruptedException {
+        //steps.login(USERNAME, PASSWORD);
+        steps.createEmail();
+        steps.fillEmail(text, to, suject, messageBody);
+        steps.sendEmail();
+        steps.navigateToInboxFolder();
+        steps.chooseLastRecievedEmail();
+        Assert.assertTrue(steps.getLastRecievedEmailubj().contains(text), "Email doesn't exists!");
+    }
+
+    @Test
+    public void saveAndDelete() throws InterruptedException {
+       // steps.login(USERNAME, PASSWORD);
+        steps.createEmail();
+        steps.fillEmail(text, to, suject, messageBody);
+        steps.saveToDrafts();
+        steps.navigateToDraftsFolder();
+        steps.deleteLastCreatedEmail();
+        System.out.println(steps.getDraftEmailsubj());
+        Assert.assertFalse(steps.getDraftEmailsubj().contains(text), "Email wasn't deleted!");
+    }
+
+    @AfterTest
+    public void cleanUp(){
+        steps.cleanUp();
+    }
+
+
+
+
+    /*@Test
+    public void test() throws InterruptedException {
+        InboxPage mainPage = new InboxPage(webDriver);
+        mainPage.create("text", to, suject, messageBody);
+    }*/
+
+    /*@Test
     public void createAndSend() throws InterruptedException {
         create(text);
         webDriver.findElement(sendBttn).click();
@@ -71,7 +100,7 @@ public class EmailTests extends BaseTest {
         webDriver.navigate().refresh();
         String email = webDriver.findElement(lastSentEmail).getAttribute("href").toString();
         webDriver.get(email);
-        String sudj = webDriver.findElement(sentEmailSubj).getText();
+        String sudj = webDriver.findElement(By.className("b-letter__head__subj__text")).getText();
         Assert.assertTrue(sudj.contains(text), "Email doesn't exists!");
     }
 
@@ -83,15 +112,12 @@ public class EmailTests extends BaseTest {
         webDriver.findElement(draftsBttn).click();
         webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         webDriver.findElement(chkBox).click();
-
         webDriver.findElement(lastCreatedEmailItem).sendKeys(Keys.DELETE);
-        Thread.sleep(1000);
-        String subj = webDriver.findElement(lastCreatedEmailItem).getAttribute("data-subject").toString();
-        Assert.assertFalse(subj.contains(text), "Email wasn't deleted");
     }
 
     @AfterTest
     public void cleanUp() {
         webDriver.close();
-    }
+    }*/
 }
+

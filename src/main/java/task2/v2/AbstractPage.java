@@ -1,9 +1,8 @@
-package task2.Pages;
+package task2.v2;
 
 import org.openqa.selenium.WebDriver;
 
 public abstract class AbstractPage {
-
     protected String PAGE_NAME;
     protected WebDriver webDriver;
 
