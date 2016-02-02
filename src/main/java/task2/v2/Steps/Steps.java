@@ -1,12 +1,15 @@
-package task2.v2;
+package task2.v2.Steps;
 
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
+import task2.v2.Pages.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class Steps {
@@ -14,11 +17,8 @@ public class Steps {
     private WebDriver webDriver;
 
     public void initBrowser() {
-        System.setProperty("webdriver.chrome.driver",
-                "D:\\TA\\chromedriver.exe");
         webDriver = new ChromeDriver();
         webDriver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
-        webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
     public void login(String USERNAME, String PASSWORD) {
@@ -36,9 +36,15 @@ public class Steps {
         return PageFactory.initElements(webDriver, EmailPage.class);
     }
 
-    public void fillEmail(String text1, String to, String suject, String messageBody) {
+    public void fillEmail(String text1, String to, String suject, String messageBody) throws IOException, InterruptedException {
         EmailPage emailPage = new EmailPage();
-        webDriver.findElement(emailPage.toField).sendKeys(to);
+        WebElement toField = webDriver.findElement(emailPage.toField);
+        toField.sendKeys(to);
+        toField.getCssValue("backgroundColor");
+        JavascriptExecutor js = ((JavascriptExecutor) webDriver);
+        js.executeScript("arguments[0].style.backgroundColor = '" + "red" + "'", toField);
+        File scrFile = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(scrFile, new File("highlight.png"));
         webDriver.findElement(emailPage.subjectField).sendKeys(suject + text1);
         webDriver.switchTo().frame(webDriver.findElement(emailPage.bodyFrame));
         webDriver.findElement(emailPage.bodyField).sendKeys(messageBody);
@@ -54,7 +60,7 @@ public class Steps {
     public void navigatetoSentEmail() {
         EmailPage emailPage = new EmailPage();
         webDriver.findElement(emailPage.sentFolder).click();
-        webDriver.navigate().refresh();
+        contextClickToRefresh();
     }
 
     public void chooseLastSentEmail() {
@@ -72,7 +78,8 @@ public class Steps {
     public void navigateToInboxFolder() {
         InboxPage inboxPage = new InboxPage(webDriver);
         webDriver.findElement(inboxPage.inboxFolder).click();
-        webDriver.navigate().refresh();
+        contextClickToRefresh();
+
     }
 
     public void chooseLastRecievedEmail() {
@@ -94,8 +101,10 @@ public class Steps {
     }
 
     public void navigateToDraftsFolder() {
-        task2.v2.DraftsPage draftsPage = new task2.v2.DraftsPage();
+        DraftsPage draftsPage = new DraftsPage();
         webDriver.findElement(draftsPage.draftsFolderBttn).click();
+        webDriver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+
     }
 
     public String getDraftEmailsubj() {
@@ -109,7 +118,22 @@ public class Steps {
         Thread.sleep(1000);
         webDriver.findElement(draftsPage.chkBox).click();
         webDriver.findElement(draftsPage.lastCreatedEmailItem).sendKeys(Keys.DELETE);
-        Thread.sleep(2000);
+        contextClickToRefresh();
+        checkEmailsAsUnread();
+    }
+
+    public void contextClickToRefresh() {
+        Actions actions = new Actions(webDriver);
+        actions.contextClick().sendKeys(Keys.chord(Keys.CONTROL, "r")).build().perform();
+    }
+
+    public void checkEmailsAsUnread() {
+        DraftsPage draftsPage = new DraftsPage();
+        webDriver.findElement(draftsPage.lastCreatedEmailItem).sendKeys(Keys.chord(Keys.CONTROL, "a"));
+        WebElement dropDown = webDriver.findElement(draftsPage.dropDown);
+        Actions actions = new Actions(webDriver);
+        actions.moveToElement(dropDown).click().sendKeys(dropDown, Keys.DOWN).sendKeys(dropDown, Keys.DOWN).sendKeys(dropDown, Keys.ENTER);
+        actions.build().perform();
     }
 
     public void cleanUp() {

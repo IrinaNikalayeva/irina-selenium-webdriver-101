@@ -1,4 +1,4 @@
-package task2.v2;
+package task2.v2.Pages;
 
 
 import org.openqa.selenium.By;
@@ -14,13 +14,13 @@ public class MainPage extends AbstractPage {
         PageFactory.initElements(this.webDriver, this);
     }
 
-    protected final By loginField = By.id("mailbox__login");
-    protected final By passwordField = By.id("mailbox__password");
-    protected final By submitButton = By.id("mailbox__auth__button");
+    public final By loginField = By.id("mailbox__login");
+    public final By passwordField = By.id("mailbox__password");
+    public final By submitButton = By.id("mailbox__auth__button");
 
 
     @Override
-    void openPage() {
+    public void openPage() {
         webDriver.get(BASE_URL);
     }
 }

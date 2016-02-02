@@ -1,4 +1,4 @@
-package task2.v2;
+package task2.v2.Pages;
 
 import org.openqa.selenium.WebDriver;
 

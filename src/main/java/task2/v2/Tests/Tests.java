@@ -1,4 +1,4 @@
-package task2.v2;
+package task2.v2.Tests;
 
 
 import org.testng.Assert;
@@ -7,6 +7,9 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import task1.Util;
+import task2.v2.Steps.Steps;
+
+import java.io.IOException;
 
 public class Tests {
     private Steps steps;
@@ -28,8 +31,8 @@ public class Tests {
         steps.login(USERNAME, PASSWORD);
     }
 
-    @Test
-    public void createAndSend() throws InterruptedException {
+   @Test
+    public void createAndSend() throws InterruptedException, IOException {
         steps.createEmail();
         steps.fillEmail(text, to, suject, messageBody);
         steps.sendEmail();
@@ -39,8 +42,8 @@ public class Tests {
 
     }
 
-    @Test
-    public void sendAndVerify() throws InterruptedException {
+   @Test
+    public void sendAndVerify() throws InterruptedException, IOException {
         steps.createEmail();
         steps.fillEmail(text, to, suject, messageBody);
         steps.sendEmail();
@@ -49,8 +52,8 @@ public class Tests {
         Assert.assertTrue(steps.getLastRecievedEmailubj().contains(text), "Email doesn't exists!");
     }
 
-    @Test
-    public void saveAndDelete() throws InterruptedException {
+   @Test
+    public void saveAndDelete() throws InterruptedException, IOException {
         steps.createEmail();
         steps.fillEmail(text, to, suject, messageBody);
         steps.saveToDrafts();
