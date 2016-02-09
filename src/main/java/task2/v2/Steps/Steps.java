@@ -5,20 +5,37 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import task2.v2.Pages.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 public class Steps {
 
     private WebDriver webDriver;
+    private final String HUB = "http://localhost:4444/wd/hub";
 
-    public void initBrowser() {
+    public void remoteDriverSetUp() throws MalformedURLException {
+        DesiredCapabilities dc = new DesiredCapabilities();
+        dc.setBrowserName("chrome");
+        dc.setPlatform(Platform.ANY);
+        webDriver = new RemoteWebDriver(new URL(HUB), dc);
+        webDriver.manage().timeouts().pageLoadTimeout(20L, TimeUnit.SECONDS);
+        webDriver.manage().timeouts().implicitlyWait(10L, TimeUnit.SECONDS );
+    }
+
+    public void initBrowser() throws MalformedURLException {
         webDriver = new ChromeDriver();
         webDriver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+        webDriver.manage().timeouts().implicitlyWait(10L, TimeUnit.SECONDS );
     }
 
     public void login(String USERNAME, String PASSWORD) {
@@ -54,7 +71,6 @@ public class Steps {
     public void sendEmail() throws InterruptedException {
         EmailPage emailPage = new EmailPage();
         webDriver.findElement(emailPage.sendBttn).click();
-        Thread.sleep(1000);
     }
 
     public void navigatetoSentEmail() {
@@ -95,9 +111,18 @@ public class Steps {
     }
 
     public void saveToDrafts() throws InterruptedException {
+        try{
         EmailPage emailPage = new EmailPage();
-        webDriver.findElement(emailPage.saveDraftBttn).click();
-        Thread.sleep(2000);
+       webDriver.findElement(emailPage.saveDraftBttn).click();
+
+            WebDriverWait wait = new WebDriverWait(webDriver, 10);
+            wait.until(ExpectedConditions.alertIsPresent());
+            Alert alert = webDriver.switchTo().alert();
+            alert.accept();
+        }
+        catch (TimeoutException e){
+
+        }
     }
 
     public void navigateToDraftsFolder() {
@@ -115,7 +140,6 @@ public class Steps {
 
     public void deleteLastCreatedEmail() throws InterruptedException {
         DraftsPage draftsPage = new DraftsPage();
-        Thread.sleep(1000);
         webDriver.findElement(draftsPage.chkBox).click();
         webDriver.findElement(draftsPage.lastCreatedEmailItem).sendKeys(Keys.DELETE);
         contextClickToRefresh();

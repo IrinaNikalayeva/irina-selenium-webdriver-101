@@ -1,15 +1,18 @@
 package task1;
 
 
-import org.openqa.selenium.Keys;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
 public class EmailTests extends BaseTest {
@@ -22,11 +25,15 @@ public class EmailTests extends BaseTest {
     String suject = "Test email";
     String messageBody = "Hello Maven!";
 
-    @BeforeSuite
+        @BeforeSuite
     public void setUp() {
-        System.setProperty("webdriver.chrome.driver",
-                "D:\\TA\\chromedriver.exe");
-        webDriver = new ChromeDriver();
+             webDriver = new ChromeDriver();
+            webDriver.manage()
+                    .timeouts()
+                    .implicitlyWait(10L, TimeUnit.SECONDS);
+            webDriver.manage()
+                    .timeouts()
+                    .pageLoadTimeout(20L, TimeUnit.SECONDS);
     }
 
 
@@ -38,6 +45,11 @@ public class EmailTests extends BaseTest {
         webDriver.findElement(submitButton).click();
     }
 
+    public void waitElement(final By locator) throws NoSuchElementException {
+        (new WebDriverWait(this.webDriver, 20))
+                .until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
     public void create(String text1) throws InterruptedException {
         webDriver.findElement(createEmailBttn).click();
         webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
@@ -47,7 +59,7 @@ public class EmailTests extends BaseTest {
         webDriver.findElement(bodyField).sendKeys(messageBody);
         webDriver.switchTo().defaultContent();
     }
-
+/*
    @Test
     public void createAndSend() throws InterruptedException {
         create(text);
@@ -60,7 +72,7 @@ public class EmailTests extends BaseTest {
         System.out.println("text " + text + " subj " + sudj);
         Assert.assertTrue(sudj.contains(text), "Email doesn't exists!");
     }
-
+*/
     @Test
     public void sendAndVerify() throws InterruptedException {
         create(text);
@@ -75,21 +87,23 @@ public class EmailTests extends BaseTest {
         Assert.assertTrue(sudj.contains(text), "Email doesn't exists!");
     }
 
-    @Test
+    /*@Test
     public void saveDraftAndRemove() throws InterruptedException {
         create(text);
+        waitElement(saveDraftBttn);
         webDriver.findElement(saveDraftBttn).click();
-        Thread.sleep(2000);
         webDriver.findElement(draftsBttn).click();
-        webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        WebDriverWait wait = new WebDriverWait(webDriver, 10);
+        wait.until(ExpectedConditions.alertIsPresent());
+        Alert alert = webDriver.switchTo().alert();
+        alert.accept();
         webDriver.findElement(chkBox).click();
-
         webDriver.findElement(lastCreatedEmailItem).sendKeys(Keys.DELETE);
         Thread.sleep(1000);
         String subj = webDriver.findElement(lastCreatedEmailItem).getAttribute("data-subject").toString();
         Assert.assertFalse(subj.contains(text), "Email wasn't deleted");
     }
-
+*/
     @AfterTest
     public void cleanUp() {
         webDriver.close();

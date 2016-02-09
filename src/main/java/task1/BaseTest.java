@@ -18,6 +18,7 @@ public class BaseTest {
 
     protected final By saveDraftBttn = By.xpath("//div[@data-name='saveDraft']");
 
+
     protected final By sentEmailSubj = By.className("b-letter__head__subj__text");
     protected final By draftsBttn = By.xpath("//a[contains(@href, '/messages/drafts/')]");
     protected final By lastCreatedEmailItem = By.xpath("//a[starts-with(@href, 'https://e.mail.ru/compose/')]"); // need to get attribute href
@@ -31,4 +32,6 @@ public class BaseTest {
     protected final By sentFolder = By.xpath("//a[contains(@href, '/messages/sent/')]");
 
     protected final By inboxFolder = By.xpath("//a[contains(@href, '/messages/inbox/')]");
+
+
 }

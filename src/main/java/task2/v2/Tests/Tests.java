@@ -10,6 +10,7 @@ import task1.Util;
 import task2.v2.Steps.Steps;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 
 public class Tests {
     private Steps steps;
@@ -20,9 +21,11 @@ public class Tests {
     String suject = "Test email";
     String messageBody = "Hello Maven!";
 
+
     @BeforeSuite
-    public void setUp() {
+    public void setUp() throws MalformedURLException {
         steps = new Steps();
+        steps.remoteDriverSetUp(); // if plan to use node
         steps.initBrowser();
     }
 
@@ -52,7 +55,7 @@ public class Tests {
         Assert.assertTrue(steps.getLastRecievedEmailubj().contains(text), "Email doesn't exists!");
     }
 
-   @Test
+    @Test
     public void saveAndDelete() throws InterruptedException, IOException {
         steps.createEmail();
         steps.fillEmail(text, to, suject, messageBody);
