@@ -1,0 +1,9 @@
+<suite name="Tests">
+    <test name="Tests">
+        <classes>
+            <class name= "Tests.CreateAndSendTest" />
+            <class name="Tests.SaveAndDeleteTest" />
+            <class name="Tests.SendAndVerifyTest" />
+        </classes>
+    </test>
+</suite>

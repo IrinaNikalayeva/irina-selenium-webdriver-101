@@ -1,13 +1,11 @@
 package task2.v2.Steps;
 
-
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import task2.v2.Pages.*;
@@ -20,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Steps {
 
-    private WebDriver webDriver;
+    protected WebDriver webDriver;
     private final String HUB = "http://localhost:4444/wd/hub";
 
     public void remoteDriverSetUp() throws MalformedURLException {
@@ -29,13 +27,14 @@ public class Steps {
         dc.setPlatform(Platform.ANY);
         webDriver = new RemoteWebDriver(new URL(HUB), dc);
         webDriver.manage().timeouts().pageLoadTimeout(20L, TimeUnit.SECONDS);
-        webDriver.manage().timeouts().implicitlyWait(10L, TimeUnit.SECONDS );
+        webDriver.manage().timeouts().implicitlyWait(10L, TimeUnit.SECONDS);
     }
 
-    public void initBrowser() throws MalformedURLException {
+    public WebDriver initBrowser() throws MalformedURLException {
         webDriver = new ChromeDriver();
         webDriver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
-        webDriver.manage().timeouts().implicitlyWait(10L, TimeUnit.SECONDS );
+        webDriver.manage().timeouts().implicitlyWait(10L, TimeUnit.SECONDS);
+        return webDriver;
     }
 
     public void login(String USERNAME, String PASSWORD) {
@@ -47,14 +46,13 @@ public class Steps {
         webDriver.findElement(mainPage.submitButton).click();
     }
 
-    public EmailPage createEmail() {
+    public void createEmail() {
         InboxPage inboxPage = new InboxPage(webDriver);
         webDriver.findElement(inboxPage.createEmailBttn).click();
-        return PageFactory.initElements(webDriver, EmailPage.class);
     }
 
     public void fillEmail(String text1, String to, String suject, String messageBody) throws IOException, InterruptedException {
-        EmailPage emailPage = new EmailPage();
+        EmailPage emailPage = new EmailPage(webDriver);
         WebElement toField = webDriver.findElement(emailPage.toField);
         toField.sendKeys(to);
         toField.getCssValue("backgroundColor");
@@ -69,24 +67,24 @@ public class Steps {
     }
 
     public void sendEmail() throws InterruptedException {
-        EmailPage emailPage = new EmailPage();
+        EmailPage emailPage = new EmailPage(webDriver);
         webDriver.findElement(emailPage.sendBttn).click();
     }
 
     public void navigatetoSentEmail() {
-        EmailPage emailPage = new EmailPage();
+        EmailPage emailPage = new EmailPage(webDriver);
         webDriver.findElement(emailPage.sentFolder).click();
         contextClickToRefresh();
     }
 
     public void chooseLastSentEmail() {
-        SentEmailFolder sentEmailFolder = new SentEmailFolder();
+        SentEmailFolder sentEmailFolder = new SentEmailFolder(webDriver);
         String email = webDriver.findElement(sentEmailFolder.lastSentEmail).getAttribute("href").toString();
         webDriver.get(email);
     }
 
     public String getSentEmailSubj() {
-        SentEmailDetailsPage sentEmailDetailsPage = new SentEmailDetailsPage();
+        SentEmailDetailsPage sentEmailDetailsPage = new SentEmailDetailsPage(webDriver);
         String subj = webDriver.findElement(sentEmailDetailsPage.sentEmailSubj).getText();
         return subj;
     }
@@ -111,35 +109,34 @@ public class Steps {
     }
 
     public void saveToDrafts() throws InterruptedException {
-        try{
-        EmailPage emailPage = new EmailPage();
-       webDriver.findElement(emailPage.saveDraftBttn).click();
+        try {
+            EmailPage emailPage = new EmailPage(webDriver);
+            webDriver.findElement(emailPage.saveDraftBttn).click();
 
             WebDriverWait wait = new WebDriverWait(webDriver, 10);
             wait.until(ExpectedConditions.alertIsPresent());
             Alert alert = webDriver.switchTo().alert();
             alert.accept();
-        }
-        catch (TimeoutException e){
+        } catch (TimeoutException e) {
 
         }
     }
 
     public void navigateToDraftsFolder() {
-        DraftsPage draftsPage = new DraftsPage();
+        DraftsPage draftsPage = new DraftsPage(webDriver);
         webDriver.findElement(draftsPage.draftsFolderBttn).click();
         webDriver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 
     }
 
     public String getDraftEmailsubj() {
-        DraftsPage draftsPage = new DraftsPage();
+        DraftsPage draftsPage = new DraftsPage(webDriver);
         String subj = webDriver.findElement(draftsPage.lastCreatedEmailItem).getAttribute("data-subject").toString();
         return subj;
     }
 
     public void deleteLastCreatedEmail() throws InterruptedException {
-        DraftsPage draftsPage = new DraftsPage();
+        DraftsPage draftsPage = new DraftsPage(webDriver);
         webDriver.findElement(draftsPage.chkBox).click();
         webDriver.findElement(draftsPage.lastCreatedEmailItem).sendKeys(Keys.DELETE);
         contextClickToRefresh();
@@ -152,7 +149,7 @@ public class Steps {
     }
 
     public void checkEmailsAsUnread() {
-        DraftsPage draftsPage = new DraftsPage();
+        DraftsPage draftsPage = new DraftsPage(webDriver);
         webDriver.findElement(draftsPage.lastCreatedEmailItem).sendKeys(Keys.chord(Keys.CONTROL, "a"));
         WebElement dropDown = webDriver.findElement(draftsPage.dropDown);
         Actions actions = new Actions(webDriver);
