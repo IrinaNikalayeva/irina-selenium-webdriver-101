@@ -1,17 +1,26 @@
-package Tests;
+package TestsUsingPatterns;
 
 import org.testng.Assert;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import task2.v2.Steps.Steps;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 
 public class SaveAndDeleteTest extends BaseTestConf {
-    protected Steps steps;
-    String to = "maven.test@mail.ru";
-    String subject = "Test email";
-    String messageBody = "Hello Maven!";
-    String text = task2.v2.Utils.RandomGenerator.getRandomString(5);
+
+    @BeforeTest
+    @Override
+    public void setUp() {
+        try {
+            steps = new Steps();
+            webDriver = steps.initBrowserWithFactoryMethod();
+            steps.login(USERNAME, PASSWORD);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Test
     public void saveAndDelete() throws InterruptedException, IOException {
@@ -23,5 +32,4 @@ public class SaveAndDeleteTest extends BaseTestConf {
         System.out.println(steps.getDraftEmailsubj());
         Assert.assertFalse(steps.getDraftEmailsubj().contains(text), "Email wasn't deleted!");
     }
-
 }

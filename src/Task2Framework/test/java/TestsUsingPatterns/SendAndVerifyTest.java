@@ -1,6 +1,7 @@
-package Tests;
+package TestsUsingPatterns;
 
 import org.testng.Assert;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import task2.v2.Steps.Steps;
 
@@ -8,11 +9,13 @@ import java.io.IOException;
 
 
 public class SendAndVerifyTest extends BaseTestConf {
-    protected Steps steps;
-    String to = "maven.test@mail.ru";
-    String subject = "Test email";
-    String messageBody = "Hello Maven!";
-    String text = task2.v2.Utils.RandomGenerator.getRandomString(5);
+    @BeforeTest
+    @Override
+    public void setUp() {
+        steps = new Steps();
+        webDriver = steps.initBrowserWithSingleton();
+        steps.login(USERNAME, PASSWORD);
+    }
 
     @Test
     public void sendAndVerify() throws InterruptedException, IOException {
@@ -23,8 +26,7 @@ public class SendAndVerifyTest extends BaseTestConf {
             steps.navigateToInboxFolder();
             steps.chooseLastRecievedEmail();
             Assert.assertTrue(steps.getLastRecievedEmailubj().contains(text), "Email doesn't exists!");
-        }
-        catch (NullPointerException e){
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
     }

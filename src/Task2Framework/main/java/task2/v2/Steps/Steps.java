@@ -9,6 +9,10 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import task2.v2.Pages.*;
+import task2.v2.Patterns.Decorator.Decorator;
+import task2.v2.Patterns.FactoryMethod.ChromeDriverConf;
+import task2.v2.Patterns.FactoryMethod.WebDriverConf;
+import task2.v2.Patterns.Singleton.WebdriverSingleton;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,8 +34,28 @@ public class Steps {
         webDriver.manage().timeouts().implicitlyWait(10L, TimeUnit.SECONDS);
     }
 
-    public WebDriver initBrowser() throws MalformedURLException {
+    public WebDriver initBrowser(){
         webDriver = new ChromeDriver();
+        return webDriver;
+    }
+    public WebDriver initBrowserWithFactoryMethod() throws MalformedURLException {
+        WebDriverConf webDriverConf = new ChromeDriverConf();
+        webDriver = webDriverConf.factoryMethod();
+        webDriver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+        webDriver.manage().timeouts().implicitlyWait(10L, TimeUnit.SECONDS);
+        return webDriver;
+    }
+
+    public WebDriver initBrowserWithDecorator(){
+        webDriver = new ChromeDriver();
+        webDriver = new Decorator(webDriver);
+        webDriver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+        webDriver.manage().timeouts().implicitlyWait(10L, TimeUnit.SECONDS);
+        return webDriver;
+    }
+
+    public WebDriver initBrowserWithSingleton(){
+        webDriver = WebdriverSingleton.getWebDriverInstance();
         webDriver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
         webDriver.manage().timeouts().implicitlyWait(10L, TimeUnit.SECONDS);
         return webDriver;
@@ -78,6 +102,7 @@ public class Steps {
     }
 
     public void chooseLastSentEmail() {
+        contextClickToRefresh();
         SentEmailFolder sentEmailFolder = new SentEmailFolder(webDriver);
         String email = webDriver.findElement(sentEmailFolder.lastSentEmail).getAttribute("href").toString();
         webDriver.get(email);
