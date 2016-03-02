@@ -11,7 +11,7 @@ import java.net.MalformedURLException;
 public abstract class BaseTestConf {
     Steps steps = new Steps();
     protected WebDriver webDriver;
-    static final String USERNAME = "maven.test";
+    static final String USERNAME = "mavn.test";
     static final String PASSWORD = "Qwerty123";
     String to = "maven.test@mail.ru";
     String subject = "Test email";
@@ -24,6 +24,6 @@ public abstract class BaseTestConf {
     @AfterClass(alwaysRun = true)
     public void cleanUp() {
         steps = new Steps();
-        steps.cleanUp();
+        steps.cleanUp(webDriver);
     }
 }

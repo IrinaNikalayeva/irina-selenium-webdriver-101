@@ -1,5 +1,7 @@
 package TestsUsingPatterns;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -9,7 +11,8 @@ import java.io.IOException;
 
 
 public class SendAndVerifyTest extends BaseTestConf {
-    @BeforeTest
+    Logger logger = LogManager.getLogger(SendAndVerifyTest.class);
+    @BeforeTest(enabled = true)
     @Override
     public void setUp() {
         steps = new Steps();
@@ -17,7 +20,7 @@ public class SendAndVerifyTest extends BaseTestConf {
         steps.login(USERNAME, PASSWORD);
     }
 
-    @Test
+    @Test(enabled = true)
     public void sendAndVerify() throws InterruptedException, IOException {
         try {
             steps.createEmail();

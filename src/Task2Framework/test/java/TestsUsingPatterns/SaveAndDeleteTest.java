@@ -10,7 +10,7 @@ import java.net.MalformedURLException;
 
 public class SaveAndDeleteTest extends BaseTestConf {
 
-    @BeforeTest
+    @BeforeTest(enabled = false)
     @Override
     public void setUp() {
         try {
@@ -22,7 +22,7 @@ public class SaveAndDeleteTest extends BaseTestConf {
         }
     }
 
-    @Test
+    @Test(enabled = false)
     public void saveAndDelete() throws InterruptedException, IOException {
         steps.createEmail();
         steps.fillEmail(text, to, subject, messageBody);
